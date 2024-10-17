@@ -15,10 +15,14 @@ jobs:
     permissions:
       packages: write
       contents: read
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Fix env
+        run: |
+          echo "GHCR_PREFIX=$(echo $GHCR_PREFIX | tr [A-Z] [a-z])" | tee -a $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
