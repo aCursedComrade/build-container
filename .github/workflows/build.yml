@@ -7,7 +7,7 @@ on:
 
 env:
   IMAGE_NAME: build-container
-  DEFAULT_TAG: ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+  DEFAULT_TAG: ghcr.io/${{ github.repository_owner }}/${{ IMAGE_NAME }}
 
 jobs:
   container:
