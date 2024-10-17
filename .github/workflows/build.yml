@@ -7,7 +7,7 @@ on:
 
 env:
   IMAGE_NAME: build-container
-  DEFAULT_TAG: ghcr.io/${{ github.repository_owner }}/${{ IMAGE_NAME }}
+  GHCR_PREFIX: ghcr.io/${{ github.repository_owner }}
 
 jobs:
   container:
@@ -27,6 +27,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       
       - name: Login to GHCR
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -38,6 +39,6 @@ jobs:
         with:
           context: .
           file: Containerfile
-          tags: ${{ env.DEFAULT_TAG }}:latest
+          tags: ${{ env.GHCR_PREFIX }}/${{ env.IMAGE_NAME }}:latest
           publish: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
