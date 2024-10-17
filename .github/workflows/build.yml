@@ -39,5 +39,5 @@ jobs:
           context: .
           file: Containerfile
           tags: ${{ env.DEFAULT_TAG }}:latest
-          publish: ${{ github.event_name != "pull_request" }}
+          publish: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
