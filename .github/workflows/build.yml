@@ -44,5 +44,5 @@ jobs:
           context: .
           file: Containerfile
           tags: ${{ env.GHCR_PREFIX }}/${{ env.IMAGE_NAME }}:latest
-          publish: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
