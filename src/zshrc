@@ -1,0 +1,97 @@
+# taken from https://github.com/aCursedComrade/dotfiles
+typeset -U PATH
+
+setopt autocd              # change directory just by typing its name
+#setopt correct            # auto correct mistakes
+setopt interactivecomments # allow comments in interactive mode
+setopt magicequalsubst     # enable filename expansion for arguments of the form ‘anything=expression’
+setopt nonomatch           # hide error message if there is no match for the pattern
+setopt notify              # report the status of background jobs immediately
+setopt numericglobsort     # sort filenames numerically when it makes sense
+setopt promptsubst         # enable command substitution in prompt
+
+WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
+#PROMPT_EOL_MARK="" # hide EOL sign ('%')
+
+# configure key keybindings
+bindkey -e                                        # emacs key bindings
+bindkey ' ' magic-space                           # do history expansion on space
+bindkey '^U' backward-kill-line                   # ctrl + U
+bindkey '^[[3;5~' kill-word                       # ctrl + Supr
+bindkey '^[[3~' delete-char                       # delete
+bindkey '^[[1;5C' forward-word                    # ctrl + ->
+bindkey '^[[1;5D' backward-word                   # ctrl + <-
+bindkey '^[[5~' beginning-of-buffer-or-history    # page up
+bindkey '^[[6~' end-of-buffer-or-history          # page down
+bindkey '^[[H' beginning-of-line                  # home
+bindkey '^[[F' end-of-line                        # end
+bindkey '^[[Z' undo                               # shift + tab undo last action
+
+# enable completion features
+autoload -Uz compinit
+compinit -d ~/.cache/zcompdump
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+# History configurations
+HISTFILE=~/.zsh_history
+HISTSIZE=2000
+SAVEHIST=2000
+#setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history         # share command history data
+alias history="history 0"     # force zsh to show the complete history
+
+# use a simple builtin prompt style
+autoload -Uz promptinit
+promptinit
+prompt redhat
+
+alias ll="ls --color=auto -lhF $@"
+alias la="ls --color=auto -AlhF $@"
+alias wtfismyip="curl myip.wtf/yaml"
+alias grep="grep --color=auto $@"
+alias tb="ncat termbin.com 9999"
+alias ip="ip -c=always $@"
+
+#export TERM='xterm-256color'
+export EDITOR='vim'
+export PAGER='less'
+export LESS='-IRs'
+export GPG_TTY=$(tty)
+
+#if [ ! -v "LANG" ]; then
+#    export LANG="C.UTF-8"
+#    #export LC_ALL="C.UTF-8"
+#    #export LANGUAGE="C.UTF-8"
+#fi
+
+if [ -d "$HOME/.local/bin" ]; then
+    export PATH="$PATH:$HOME/.local/bin"
+fi
+
+if [ -d "$HOME/.cargo/bin" ]; then
+    export PATH="$PATH:$HOME/.cargo/bin"
+fi
+
+#if [ -d "$HOME/.local/lib" ]; then
+#    export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$HOME/.local/lib"
+#fi
+
+# user specific variables for this instance
+if [ -f "$HOME/.envrc" ]; then
+    source "$HOME/.envrc"
+fi
