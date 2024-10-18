@@ -1,10 +1,10 @@
 # https://docs.docker.com/build/building/best-practices/
 FROM debian:sid
 
-LABEL org.opencontainers.image.authors "Loshana Aloka <acursed_comrde@yahoo.com>"
-LABEL org.opencontainers.image.source "https://github.com/aCursedComrade/build-container"
-LABEL org.opencontainers.image.description "A container with pre-configured software build tools"
-LABEL org.opencontainers.image.licenses "MIT"
+LABEL org.opencontainers.image.authors="Loshana Aloka <acursed_comrde@yahoo.com>"
+LABEL org.opencontainers.image.source="https://github.com/aCursedComrade/build-container"
+LABEL org.opencontainers.image.description="A container with pre-configured software build tools"
+LABEL org.opencontainers.image.licenses="MIT"
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean && \
     echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' | tee /etc/apt/apt.conf.d/keep-cache
